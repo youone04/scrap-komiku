@@ -3,9 +3,11 @@ const services = require('../helper/service');
 const cheerio = require('cheerio');
 
 const fetchRecipes = (req, res, response) => {
+    // response berisi data berupa html
     try {
         const $ = cheerio.load(response.data);
         const element = $('#category-content');
+        // console.log(response.data)
         let title, thumb, duration, servings, dificulty, key, url, href;
         let recipe_list = [];
         element.find('.category-posts');
@@ -93,6 +95,10 @@ const Controller = {
     newRecipes : async (req, res) => {
         try {
             const response = await services.fetchService(`${baseUrl}/resep-masakan/`, res);
+            // mendapatkan data berupa html
+            // console.log(response)
+
+            // diolah di fungsi fetchRecipes agar menjadi json
             return fetchRecipes(req, res, response);
         } catch (error) {
             throw error;
