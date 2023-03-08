@@ -37,6 +37,10 @@ route.get('/api/categorys/article', controller.articleCategory);
 route.get('/api/categorys/article/:key', controller.articleByCategory);
 route.get('/api/article/:tag/:key', controller.articleDetails);
 
+//komiku
+route.get('/api/terbaru', controller.updateTerbaru);
+
+
 route.get('*', (req, res) => {
     res.status(404).json({
         method : req.method,

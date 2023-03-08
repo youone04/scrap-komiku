@@ -460,6 +460,45 @@ const Controller = {
         } catch (error) {
             throw error;
         }
+    },
+    updateTerbaru : async (req, res) => {
+        try {
+            const key = req.params.key;
+            const page = req.params.page;
+            const response = await services.fetchService('https://komiku.id/', res);
+            // return fetchRecipes(req, res, response);
+            const terbaru = [];
+            const $ = cheerio.load(response.data);
+            const element2 = $("#Terbaru > div");
+           element2.find('.ls4').each((i, e) => {
+            link =  $(e).find('.ls4v').find('a').attr("href");
+            img =  $(e).find('.ls4v').find('a').find("img").attr("src");
+            read =  $(e).find('.ls4v').find('.vw').text();
+            warna =  $(e).find('.ls4v').find('.warna').text();
+            up =  $(e).find('.ls4v').find('.up').text();
+            title =  $(e).find('.ls4j').find('h4').find('a').text();
+            author =  $(e).find('.ls4j').find('.ls4s').text();
+            
+            terbaru.push({
+                title: title,
+                author: author,
+                link : link,
+                img : img,
+                read: read,
+                warna: warna,
+                up: up
+            });
+
+           })
+
+            res.send({
+                status : true,
+                data : terbaru
+            });
+            
+        } catch (error) {
+            throw error;
+        }
     }
 }
 
