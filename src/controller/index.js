@@ -478,6 +478,8 @@ const Controller = {
             up =  $(e).find('.ls4v').find('.up').text();
             title =  $(e).find('.ls4j').find('h4').find('a').text();
             author =  $(e).find('.ls4j').find('.ls4s').text();
+            text_now =  $(e).find('.ls4j').find('.ls24').text();
+            link_chapter_now =  $(e).find('.ls4j').find('.ls24').attr('href');
             
             terbaru.push({
                 title: title,
@@ -486,7 +488,11 @@ const Controller = {
                 img : img,
                 read: read,
                 warna: warna,
-                up: up
+                up: up,
+                now : {
+                    chapter : text_now,
+                    link : link_chapter_now
+                }
             });
 
            })
