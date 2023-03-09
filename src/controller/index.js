@@ -512,7 +512,7 @@ const Controller = {
             const response = await services.fetchService(`https://komiku.id/ch/${link}`, res);
             const $ = cheerio.load(response.data);
             const element = $("#body > main > article");
-            title = element.find('header').find('h1').text();
+            title = element.find('header').find('h1').text().trim();
 
             const element2 = $("#Baca_Komik");
             element2.find('.ww').each((i, e) => {
@@ -541,19 +541,21 @@ const Controller = {
             element.find('.bge').each((i, e) => {
                 link = $(e).find(".bgei").find("a").attr("href");
                 img = $(e).find(".bgei").find("img").attr("data-src");
-                inf = $(e).find(".bgei").find(".tpe1_inf").text();
+                inf = $(e).find(".bgei").find(".tpe1_inf").text().trim();
                 title2 = $(e).find(".kan").find(".judul2").text();
-                title1 = $(e).find(".kan").find("a").find("h3").text();
+                title1 = $(e).find(".kan").find("a").find("h3").text().trim();
+                update =  $(e).find(".kan").find("p").text().trim();
+    
                 search.push({
                     title1: title1,
                     title2: title2,
                     link : link,
                     img : img,
-                    info : inf
+                    info : inf,
+                    update: update
                 })
 
             })
-
             res.send({
                 status: 200,
                 data : search
