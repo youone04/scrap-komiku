@@ -315,7 +315,7 @@ const Controller = {
     searchRecipes : async (req, res) => {
         try {
             const query = req.query.q;
-            console.log(query);
+            // console.log(query);
             const response = await services.fetchService(`${baseUrl}/?s=${query}`, res);
             const $ = cheerio.load(response.data);
             const element = $('#search-content');
@@ -527,6 +527,38 @@ const Controller = {
                 data : baca
             })
 
+        }catch(error){
+            throw error;
+        }
+    },
+    searchKomik : async(req, res) => {
+        try{
+            const { query } = req.params;
+            const search = [];
+            const response = await services.fetchService(`https://data.komiku.id/cari/?post_type=manga&s=${query}`, res);
+            const $ = cheerio.load(response.data);
+            const element = $("body > main > section");
+            element.find('.bge').each((i, e) => {
+                link = $(e).find(".bgei").find("a").attr("href");
+                img = $(e).find(".bgei").find("img").attr("data-src");
+                inf = $(e).find(".bgei").find(".tpe1_inf").text();
+                title2 = $(e).find(".kan").find(".judul2").text();
+                title1 = $(e).find(".kan").find("a").find("h3").text();
+                search.push({
+                    title1: title1,
+                    title2: title2,
+                    link : link,
+                    img : img,
+                    info : inf
+                })
+
+            })
+
+            res.send({
+                status: 200,
+                data : search
+
+            })
         }catch(error){
             throw error;
         }

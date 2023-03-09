@@ -40,6 +40,7 @@ route.get('/api/article/:tag/:key', controller.articleDetails);
 //komiku
 route.get('/api/terbaru', controller.updateTerbaru);
 route.get('/api/baca/ch/:link', controller.bacaKomik);
+route.get('/api/search/:query', controller.searchKomik);
 
 
 route.get('*', (req, res) => {
