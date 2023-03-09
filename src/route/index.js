@@ -39,6 +39,7 @@ route.get('/api/article/:tag/:key', controller.articleDetails);
 
 //komiku
 route.get('/api/terbaru', controller.updateTerbaru);
+route.get('/api/baca/ch/:link', controller.bacaKomik);
 
 
 route.get('*', (req, res) => {

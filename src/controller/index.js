@@ -463,14 +463,13 @@ const Controller = {
     },
     updateTerbaru : async (req, res) => {
         try {
-            const key = req.params.key;
-            const page = req.params.page;
+            
             const response = await services.fetchService('https://komiku.id/', res);
             // return fetchRecipes(req, res, response);
             const terbaru = [];
             const $ = cheerio.load(response.data);
             const element2 = $("#Terbaru > div");
-           element2.find('.ls4').each((i, e) => {
+            element2.find('.ls4').each((i, e) => {
             link =  $(e).find('.ls4v').find('a').attr("href");
             img =  $(e).find('.ls4v').find('a').find("img").attr("src");
             read =  $(e).find('.ls4v').find('.vw').text();
@@ -491,7 +490,7 @@ const Controller = {
                 up: up,
                 now : {
                     chapter : text_now,
-                    link : link_chapter_now
+                    link : link_chapter_now.split("/")[2]
                 }
             });
 
@@ -503,6 +502,32 @@ const Controller = {
             });
             
         } catch (error) {
+            throw error;
+        }
+    },
+    bacaKomik : async(req, res) => {
+        try{
+            const { link } = req.params;
+            const baca = [];
+            const response = await services.fetchService(`https://komiku.id/ch/${link}`, res);
+            const $ = cheerio.load(response.data);
+            const element = $("#body > main > article");
+            title = element.find('header').find('h1').text();
+
+            const element2 = $("#Baca_Komik");
+            element2.find('.ww').each((i, e) => {
+                img = $(e).attr("src");
+                baca.push({
+                    img: img
+                });
+            })
+            res.send({
+                status : 200,
+                title : title,
+                data : baca
+            })
+
+        }catch(error){
             throw error;
         }
     }
