@@ -41,6 +41,7 @@ route.get('/api/article/:tag/:key', controller.articleDetails);
 route.get('/api/terbaru', controller.updateTerbaru);
 route.get('/api/baca/ch/:link', controller.bacaKomik);
 route.get('/api/search/:query', controller.searchKomik);
+route.get('/api/pilih-chapter/:link', controller.pilihChapter);
 
 
 route.get('*', (req, res) => {

@@ -479,11 +479,11 @@ const Controller = {
             author =  $(e).find('.ls4j').find('.ls4s').text();
             text_now =  $(e).find('.ls4j').find('.ls24').text();
             link_chapter_now =  $(e).find('.ls4j').find('.ls24').attr('href');
-            
+           
             terbaru.push({
                 title: title,
                 author: author,
-                link : link,
+                link : link.split("/")[2],
                 img : img,
                 read: read,
                 warna: warna,
@@ -501,7 +501,35 @@ const Controller = {
                 data : terbaru
             });
             
-        } catch (error) {
+        }catch (error) {
+            throw error;
+        }
+    },
+    pilihChapter : async(req, res) => {
+        try{
+        const {link} = req.params;
+        const pilih_chapter = [];
+        const response = await services.fetchService(`https://komiku.id/manga/${link}`, res);
+        const $ = cheerio.load(response.data);
+        const element = $("#Daftar_Chapter");
+        element.find('tr').each((i, e) => {
+            title =  $(e).find('.judulseries').text().trim();
+            tanggal =  $(e).find('.tanggalseries').text().trim();
+            link_chapter =  $(e).find('.judulseries').find("a").attr("href");
+            // console.log(title)
+            pilih_chapter.push({
+                title: title,
+                tanggal: tanggal,
+                link_chapter: link_chapter?.split("/")[2]
+            })
+        })
+
+        res.send({
+            status: 200,
+            data : pilih_chapter
+        })
+
+        }catch (error) {
             throw error;
         }
     },
